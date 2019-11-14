@@ -4,7 +4,7 @@ use std::io;
 use std::io::{BufRead, BufReader, Write};
 use std::thread;
 
-const PORT: &str = "/dev/ttyAMA0";
+const PORT: &str = "/dev/ttyACM0";
 
 pub fn main() {
     let stream_rx = serialport::open(PORT).unwrap();
@@ -27,12 +27,13 @@ pub fn main() {
 
     let mut buf_reader = BufReader::new(stream_rx);
 
-    loop {
-        let mut content = String::new();
+    let mut content = String::new();
 
+    loop {
         match buf_reader.read_line(&mut content) {
             Ok(_) => {
                 print!("{}", content);
+                content = String::new();
             }
 
             Err(ref e) if e.kind() == io::ErrorKind::TimedOut => (),
