@@ -4,7 +4,7 @@ use std::io;
 use std::io::{BufRead, BufReader, Write};
 use std::thread;
 
-const PORT: &str = "/dev/serial0";
+const PORT: &str = "/dev/AMA0";
 
 pub fn main() {
     let stream_rx = serialport::open(PORT).unwrap();
@@ -25,6 +25,8 @@ pub fn main() {
             Ok(_) => {
                 print!("{}", content);
             }
+
+            Err(ref e) if e.kind() == io::ErrorKind::TimedOut => (),
 
             Err(e) => {
                 panic!("{:?}", e);
