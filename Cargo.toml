@@ -31,3 +31,7 @@ path = "src/garfanzo.rs"
 [[bin]]
 name = "fatkhiyev"
 path = "src/fatkhiyev.rs"
+
+[[bin]]
+name = "tester"
+path = "src/tester.rs"
