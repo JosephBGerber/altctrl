@@ -3,11 +3,23 @@
 use std::io;
 use std::io::{BufRead, BufReader, Write};
 use std::thread;
+use std::time::Duration;
+
+use serialport::prelude::*;
 
 const PORT: &str = "/dev/ttyACM0";
 
 pub fn main() {
-    let stream_rx = serialport::open(PORT).unwrap();
+    let s = SerialPortSettings {
+        baud_rate: 115_200,
+        data_bits: DataBits::Eight,
+        flow_control: FlowControl::None,
+        parity: Parity::None,
+        stop_bits: StopBits::One,
+        timeout: Duration::from_secs(1),
+    };
+
+    let stream_rx = serialport::open_with_settings(PORT, &s).unwrap();
     let mut stream_tx = stream_rx.try_clone().unwrap();
 
     thread::spawn(move || loop {
